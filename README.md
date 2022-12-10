@@ -1,1 +1,1 @@
-# DTensorProject (for KNU, studnt: Євген Гапонюк)
+# DTensorProject (for KNU, student: Євген Гапонюк)
