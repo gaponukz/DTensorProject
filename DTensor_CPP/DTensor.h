@@ -15,8 +15,9 @@ public:
     Tensor();
     ~Tensor();
     Tensor(int dimension, const int *shape);
-
+    Tensor(LinkedList *array, int dimension, const int *shape);
     explicit Tensor(double element);
+    
     void reshape(int new_dimension, const int *new_shape);
 
     int dimension() { return number_dim; };
@@ -67,7 +68,6 @@ private:
     LinkedList *mArray;
     int *mShape;
 
-    Tensor(LinkedList *array, int dimension, const int *shape);
     LinkedList *copy_ndim_array(LinkedList *array,int dimension, const int *shape,  int dimLevel);
 
     void delete_ndim_array(LinkedList *array, int dimension, const int *shape, int dimLevel);

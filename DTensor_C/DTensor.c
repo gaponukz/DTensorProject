@@ -115,6 +115,16 @@ Tensor at(Tensor tensor, int i) {
     }
 }
 
+int *shape(Tensor tensor) {
+    int* result_shape = (int*)malloc(sizeof(int) * tensor.number_dim);
+
+    for (size_t itr = 0; itr < tensor.number_dim; ++itr) {
+        result_shape[itr] = tensor.mShape[itr];
+    }
+
+    return result_shape;
+};
+
 void create_chain(Tensor tensor, LinkedList* array, int dimLevel, double *resArray, int startIndex) {
     if (tensor.number_dim - dimLevel < 1) {
         return;
@@ -142,6 +152,7 @@ double* chain(Tensor tensor) {
     double* resArray = (double*)malloc(amount * sizeof(double));
     int startIndex = 0;
     create_chain(tensor, tensor.mArray, 0, resArray, startIndex);
+
     return resArray;
 
 }
@@ -192,8 +203,7 @@ Tensor reshape(Tensor tensor, int new_dimension, const int *new_shape) {
         tensor.mShape[itr] = new_shape[itr];
     }
 
-    int startIndex = 0;
-    fill_array_from_chain(tensor, newArray, 0, _chain, startIndex);
+    fill_array_from_chain(tensor, newArray, 0, _chain, 0);
     tensor.mArray = newArray;
 
     return tensor;
@@ -287,11 +297,70 @@ void set_marray(Tensor tensor, LinkedList* new_marray) {
 }
 
 void to_file(Tensor tensor, const char filename[]) {
-    // TODO: logic
+    FILE *file_ptr = fopen(filename, "wb");
+
+    if (!file_ptr) {
+		// printf("Unable to open file!");
+		return;
+	}
+
+    int* _shape = shape(tensor);
+    double* _chain = chain(tensor);
+
+    int amount = 1;
+
+    for (size_t itr = 0; itr < tensor.number_dim; ++itr) {
+        amount *= tensor.mShape[itr];
+    }
+
+    fwrite(&tensor.number_dim, sizeof(int), 1, file_ptr);
+
+    for (size_t itr = 0; itr < tensor.number_dim; ++itr) {
+        fwrite(&_shape[itr], sizeof(int), 1, file_ptr);
+    }
+
+    for (size_t itr = 0; itr < amount; ++itr) {
+        fwrite(&_chain[itr], sizeof(double), 1, file_ptr);
+    }
+
+    fclose(file_ptr);
 }
 
 Tensor from_file(const char filename[]) {
-    Tensor _new = TensorInit(0);
-    // TODO: logic
+    FILE *file_ptr = fopen(filename, "rb");
+
+    int _number_dim;
+    int amount = 1;
+
+    fread(&_number_dim, sizeof(int), 1, file_ptr);
+    int *_shape = (int*)malloc(sizeof(int)*_number_dim);
+
+    for (size_t itr = 0; itr < _number_dim; ++itr) {
+        fread(&_shape[itr], sizeof(int), 1, file_ptr);
+    }
+
+    for (size_t itr = 0; itr < _number_dim; ++itr) {
+        amount *= _shape[itr];
+    }
+
+    double* _chain = (double*)malloc(sizeof(double)*amount);
+    
+    for (size_t i = 0; i < amount; ++i) {
+        fwrite(&_chain[i], sizeof(double), 1, file_ptr);
+    }
+
+    fclose(file_ptr);
+
+    Tensor _new = TensorInit(_number_dim, _shape);
+
+    LinkedList* newArray = create_ndim_array(_number_dim, _shape, 0);
+
+    // for (size_t itr = 0; itr < amount; ++itr) {
+    //     printf("%lf\n", _chain[itr]);
+    // }
+
+    fill_array_from_chain(_new, newArray, 0, _chain, 0);
+    set_marray(_new, newArray);
+
     return _new;
 };

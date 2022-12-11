@@ -45,6 +45,8 @@ Tensor TensorInitOne(double element);
 
 Tensor at(Tensor tensor, int i);
 
+int *shape(Tensor tensor);
+
 void create_chain(Tensor tensor, LinkedList* array, int dimLevel, double *resArray, int startIndex);
 
 double* chain(Tensor tensor);

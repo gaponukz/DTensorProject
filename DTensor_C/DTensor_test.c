@@ -24,6 +24,12 @@ int main(int argc, char **argv) {
 
     Tensor test2 = add(test1, 3);
 
+    to_file(test2, "test2.dte");
+
+    Tensor tensor_from_file = from_file("test2.dte");
+
+    print(tensor_from_file);
+
     print(test2);
     const int new_shape[2] = {3, 2};
     Tensor test3 = reshape(test2, 2, new_shape);
