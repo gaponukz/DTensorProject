@@ -1,3 +1,7 @@
+/* File DTensor.c
+    Realization of DTensor.h function
+    Done by Evgeny Hapoyunyuk (group 2)
+*/
 LinkedList* Tensor::create_ndim_array(int dimension, const int *shape, int dimLevel) {
     if (dimension < 1) {
         return nullptr;

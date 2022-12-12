@@ -1,3 +1,7 @@
+/* File DTensor_test.c
+    Test some DTensor functions
+    Done by Evgeny Hapoyunyuk (group 2)
+*/
 #include "DTensor.h"
 #include "DTensor.c"
 #include "stdio.h"

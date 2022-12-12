@@ -1,3 +1,7 @@
+/* File DTensor_test.cpp
+    Test some DTensor functions
+    Done by Evgeny Hapoyunyuk (group 2)
+*/
 #include <iostream>
 #include <cassert>
 #include <fstream>

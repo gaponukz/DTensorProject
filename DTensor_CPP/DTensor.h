@@ -1,17 +1,30 @@
+/* File DTensor.h
+    Realization of Tensor class
+    Done by Evgeny Hapoyunyuk (group 2)
+    Headers for Tensor class
+*/
 #include <iostream>
 #include <fstream>
 #include <string>
 
 using namespace std;
-// Abstract data double linked list
+
+/* Abstract data linked list. Structure for tensor's elements */
 struct LinkedList{
     double value;
     LinkedList *next;
 };
 
-// Main class
+/* Base class of tensor */
 class Tensor {
 public:
+    /**
+     * Main constructor, from technical task
+     * 
+     * @param LinkedList* масив даних тензору
+     * @param int dimension: натуральне число – кількість N розмірностей тензору; 
+     * @param const int *shape: вказівник на натуральні числа, - це масив з N чисел, величини першоЇ, другої … N-тої розмірності даного тензору
+    */
     Tensor();
     ~Tensor();
     Tensor(int dimension, const int *shape);
@@ -30,11 +43,29 @@ public:
         return result_shape;
     };
 
+    /**
+     * Functions for work with chain (list af tensor's double elements)
+        @param LinkedList* array - array for fill or creat
+        @param int dimLevel - level of tensor (0 for default)
+    */
     double* chain();
     void fill_array_from_chain(LinkedList *array, int dimLevel, double *_chain, int &startIndex);
+
+    /**
+     * Functions for work with LinkedList elements (we use it in tensor as *mArray)
+        @param int dimension - tensor's dimension
+        @param const int *shape - tensor's shape list
+        @param int dimLevel - level of tensor (0 for default)
+    */
     LinkedList *create_ndim_array(int dimension, const int *shape, int dimLevel);
     LinkedList *create_ndim_array(int dimension, const int *shape);
 
+    /**
+     * Function binary/unary operations
+        @param const Tensor &other - second tensor
+        @param double singleElement - element to unary operations
+        @return Tensor element
+    */
     Tensor &operator=(const Tensor &other);
     Tensor &operator[](int i);
     Tensor &operator+(const Tensor &other);
@@ -51,6 +82,10 @@ public:
 
     void print();
     void write(std::ostream &stream);
+    /**
+     * Function load tensor in binary file
+        @param const std::string &filename - file name (.dte)
+    */
     void to_file(const std::string &filename);
     void set_marray(LinkedList * new_marray);
 
@@ -81,4 +116,8 @@ private:
     bool is_equal(LinkedList *array1, LinkedList *array2, int dimensional, const int *shape, int dimLevel);
 };
 
+/**
+ * Function get tensor from binary file
+    @param const std::string &filename - file name (.dte)
+*/
 Tensor from_file(const std::string &filename);

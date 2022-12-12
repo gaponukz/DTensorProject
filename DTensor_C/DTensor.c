@@ -1,3 +1,8 @@
+/* File DTensor.c
+    Realization of DTensor.h function
+    Done by Evgeny Hapoyunyuk (group 2)
+*/
+
 LinkedList* create_ndim_array(int dimension, const int *shape, int dimLevel) {
     LinkedList *res = (LinkedList*)malloc(shape[dimLevel] * sizeof(LinkedList));
 
@@ -49,13 +54,6 @@ LinkedList* copy_ndim_array(LinkedList *array, int dimension, const int *shape, 
     return result;
 }
 
-/**
- * Main constructor, from technical task
- * 
- * @param LinkedList* масив даних тензору
- * @param int dimension: натуральне число – кількість N розмірностей тензору; 
- * @param const int *shape: вказівник на натуральні числа, - це масив з N чисел, величини першоЇ, другої … N-тої розмірності даного тензору
-*/
 Tensor TensorInitFull(LinkedList* array, int dimension, const int *shape) {
     Tensor tensor;
     tensor.number_dim = dimension;
