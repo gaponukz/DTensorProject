@@ -303,13 +303,17 @@ void to_file(Tensor tensor, const char filename[]) {
 	}
 
     int* _shape = shape(tensor);
-    double* _chain = chain(tensor);
+    // double* _chain = chain(tensor);
 
     int amount = 1;
 
     for (size_t itr = 0; itr < tensor.number_dim; ++itr) {
         amount *= tensor.mShape[itr];
     }
+    double* _chain = (double*)malloc(amount * sizeof(double));
+    int startIndex = 0;
+
+    create_chain(tensor, tensor.mArray, 0, _chain, 0);
 
     fwrite(&tensor.number_dim, sizeof(int), 1, file_ptr);
 
@@ -352,10 +356,6 @@ Tensor from_file(const char filename[]) {
     Tensor _new = TensorInit(_number_dim, _shape);
 
     LinkedList* newArray = create_ndim_array(_number_dim, _shape, 0);
-
-    // for (size_t itr = 0; itr < amount; ++itr) {
-    //     printf("%lf\n", _chain[itr]);
-    // }
 
     fill_array_from_chain(_new, newArray, 0, _chain, 0);
     set_marray(_new, newArray);

@@ -26,13 +26,13 @@ int main(int argc, char **argv) {
     int values[6] = {0, 1, 2, 3, 4, 5};
     Tensor test1 = TensorInit(dim, shape);
 
-    Tensor test2 = add(test1, 3);
+    to_file(test1, "test1.dte");
 
-    to_file(test2, "test2.dte");
-
-    Tensor tensor_from_file = from_file("test2.dte");
+    Tensor tensor_from_file = from_file("test1.dte");
 
     print(tensor_from_file);
+
+    Tensor test2 = add(test1, 3);
 
     print(test2);
     const int new_shape[2] = {3, 2};
